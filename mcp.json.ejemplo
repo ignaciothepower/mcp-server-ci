@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "mi-servidor": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "--directory", "C:/Users/TU_USUARIO/mcp-server", "python", "server.py"]
+    }
+  }
+}

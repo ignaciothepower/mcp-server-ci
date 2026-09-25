@@ -1,0 +1,38 @@
+# WORKFLOW: se dispara solo en cada push y en cada pull request a main
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # JOB 1: control de calidad. Cada job corre en una maquina limpia de GitHub (Ubuntu)
+  calidad:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.12"]   # el mismo job, dos veces: con dos versiones de Python
+    steps:
+      # STEP: bajar el codigo del repositorio a la maquina
+      - uses: actions/checkout@v4
+
+      # STEP: instalar Python y guardar en cache lo que descarga pip (la 2a vez va mas rapido)
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Instalar dependencias
+        run: pip install -r requirements-dev.txt
+
+      - name: Linting (ruff check)
+        run: ruff check .
+
+      - name: Formato (ruff format --check)
+        run: ruff format --check .
+
+      - name: Tests (pytest)
+        run: pytest -v
