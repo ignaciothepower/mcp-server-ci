@@ -55,7 +55,7 @@ def consultar_pedido(numero: str) -> dict:
     Args:
         numero: numero de pedido de 4 cifras, por ejemplo "1234"
     """
-    numero = numero.strip().lstrip("#")
+    numero = numero.strip()  # BUG a proposito: ya no quitamos la "#"
     if not (numero.isdigit() and len(numero) == 4):
         log.warning("numero de pedido invalido: %r", numero)
         return {"error": "El numero de pedido debe tener 4 cifras, por ejemplo 1234"}
