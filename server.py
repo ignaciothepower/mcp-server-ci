@@ -1,11 +1,14 @@
 """Servidor MCP de la tienda (Sesion 10) con logging estructurado en JSON a stderr (Sesion 11)."""
 
+import os
 import time
 
 import httpx
 
 # mcp 2.x: la clase se llama MCPServer (en la 1.x era FastMCP, from mcp.server.fastmcp)
 from mcp.server.mcpserver import MCPServer
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 
 import logs
 
@@ -74,6 +77,20 @@ def politica_devoluciones() -> str:
         return f.read()
 
 
+# ---- Sesion 12 · en la nube: una ruta HTTP normal para comprobar que el servidor esta vivo ----
+@mcp.custom_route("/salud", methods=["GET"])
+async def salud(request: Request) -> JSONResponse:
+    """Health check: lo que mira un balanceador (o tu navegador) para saber si el servidor responde."""
+    return JSONResponse({"estado": "ok", "servidor": "mi-servidor", "tools": ["convertir_precio", "consultar_pedido"]})
+
+
 if __name__ == "__main__":
-    log.info("arranque", extra={"campos": {"transporte": "stdio"}})
-    mcp.run()  # transporte por defecto: stdio
+    # En local (Claude Code, tests): STDIO. En la nube (Docker, EC2): HTTP, porque el cliente esta en otra maquina.
+    transporte = os.environ.get("MCP_TRANSPORT", "stdio")
+    log.info("arranque", extra={"campos": {"transporte": transporte}})
+    if transporte == "http":
+        # 0.0.0.0 = escuchar en todas las interfaces: obligatorio dentro de un contenedor.
+        # Quien decide quien entra NO es el codigo, es el security group de AWS (el cortafuegos).
+        mcp.run("streamable-http", host="0.0.0.0", port=int(os.environ.get("PORT", "8000")))  # noqa: S104
+    else:
+        mcp.run()  # transporte por defecto: stdio
