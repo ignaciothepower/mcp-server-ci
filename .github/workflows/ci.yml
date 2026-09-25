@@ -16,10 +16,10 @@ jobs:
         python-version: ["3.10", "3.12"]   # el mismo job, dos veces: con dos versiones de Python
     steps:
       # STEP: bajar el codigo del repositorio a la maquina
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # STEP: instalar Python y guardar en cache lo que descarga pip (la 2a vez va mas rapido)
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
