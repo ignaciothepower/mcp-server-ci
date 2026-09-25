@@ -78,3 +78,45 @@ tests/                    pytest
 .env.example              Plantilla de secretos (sin claves reales)
 soluciones/               Ejercicios de la Sesión 10
 ```
+
+## Sesión 12 · Desplegar en la nube (AWS)
+
+El mismo servidor, ahora por **HTTP** dentro de un contenedor Docker en una máquina EC2. En local sigue siendo STDIO; en la nube, `MCP_TRANSPORT=http` (ya viene en el `Dockerfile`).
+
+```bash
+docker build -t mcp-server .                 # imagen de ~198 MB
+docker run -d -p 8000:8000 mcp-server        # servidor MCP en http://localhost:8000/mcp
+curl http://localhost:8000/salud             # {"estado":"ok",...}
+python cliente_http.py http://IP-DE-LA-EC2:8000
+```
+
+**En AWS** (desde **AWS CloudShell**, sin crear access keys): `aws/desplegar.sh` hace todo lo de la clase y `aws/apagar.sh` lo borra y comprueba que el gasto queda a cero.
+
+| Pieza | En este proyecto |
+|---|---|
+| **IAM** | Usuario administrador para el día a día; la cuenta *root* solo para facturación (y con MFA) |
+| **Budget** | Alerta de 5 USD/mes: email al 80 % real y al 100 % previsto |
+| **VPC / security group** | Nada de `0.0.0.0/0`: el puerto 22 solo desde CloudShell y el 8000 solo desde tu IP |
+| **EC2** | `t3.micro` (Free Tier) con Amazon Linux 2023 e IMDSv2 obligatorio |
+| **S3** | Bucket privado (bloqueo de acceso público por defecto) y un enlace firmado de 5 minutos para compartir un fichero |
+
+### Checklist: apaga todo
+
+- [ ] `aws ec2 terminate-instances` y esperar a `terminated` (el disco se borra con ella)
+- [ ] Borrar el security group y el par de claves
+- [ ] `aws s3 rb s3://BUCKET --force`
+- [ ] Comprobar a 0: instancias, discos EBS, IPs elásticas, snapshots y buckets (`bash aws/apagar.sh` lo hace)
+- [ ] Revisar *Billing* al día siguiente (los costes tardan unas horas en aparecer)
+
+En la clase: la t3.micro estuvo encendida unos 30 minutos (**menos de 1 céntimo**) y todo quedó a cero.
+
+### Alternativa sin tarjeta: Render o Railway
+
+No ejecutado en clase. Los dos leen el `Dockerfile` del repositorio:
+
+1. Crea una cuenta gratuita con tu GitHub y elige *New Web Service* (Render) o *New Project → Deploy from GitHub repo* (Railway).
+2. Selecciona este repositorio; detectan el `Dockerfile` solos.
+3. Variables: `MCP_TRANSPORT=http` (ya está en el Dockerfile) y el puerto que te indique la plataforma en `PORT`.
+4. Te dan una URL pública con HTTPS: `curl https://TU-APP/salud`.
+
+Ojo: en el plan gratuito el servicio se duerme tras un rato sin uso y tarda unos segundos en despertar.
