@@ -1,6 +1,6 @@
-"""Cliente MCP por HTTP (Sesion 12): habla con el servidor aunque este en otra maquina, por ejemplo en AWS.
+"""Cliente MCP por HTTP (Sesion 12): habla con el servidor aunque este en otra maquina, por ejemplo en la nube.
 
-Uso:  python cliente_http.py http://IP-DE-LA-EC2:8000
+Uso:  python cliente_http.py http://IP-DEL-SERVIDOR:8000
 Hace lo mismo que Claude Code o nuestro host: initialize -> tools/list -> tools/call -> resources/read.
 """
 

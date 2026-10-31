@@ -85,12 +85,12 @@ async def salud(request: Request) -> JSONResponse:
 
 
 if __name__ == "__main__":
-    # En local (Claude Code, tests): STDIO. En la nube (Docker, EC2): HTTP, porque el cliente esta en otra maquina.
+    # En local (Claude Code, tests): STDIO. En la nube (Docker): HTTP, porque el cliente esta en otra maquina.
     transporte = os.environ.get("MCP_TRANSPORT", "stdio")
     log.info("arranque", extra={"campos": {"transporte": transporte}})
     if transporte == "http":
         # 0.0.0.0 = escuchar en todas las interfaces: obligatorio dentro de un contenedor.
-        # Quien decide quien entra NO es el codigo, es el security group de AWS (el cortafuegos).
+        # Quien decide quien entra NO es el codigo, es el cortafuegos de la nube.
         mcp.run("streamable-http", host="0.0.0.0", port=int(os.environ.get("PORT", "8000")))  # noqa: S104
     else:
         mcp.run()  # transporte por defecto: stdio
