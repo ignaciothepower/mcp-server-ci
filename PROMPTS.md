@@ -181,4 +181,4 @@ Todos los jobs de la CI en verde, la traza en LangFuse y el README con el checkl
 
 ---
 
-*Material del Master AI Engineer · The Power · Ignacio de Pastors*
+*Material del Master AI Engineer · The Power*
