@@ -8,7 +8,7 @@
 set -euo pipefail
 
 RG=${RG:-rg-master-mcp}          # grupo de recursos: todo lo de la practica vive aqui y se borra de una vez
-LOC=${LOC:-westeurope}           # region (Paises Bajos)
+LOC=${LOC:-spaincentral}         # region (Madrid); las cuentas de prueba no pueden crear en todas
 APP=${APP:-mcp-tienda}           # nombre de la Container App
 MI_IP=${MI_IP:?Pon la IP publica de tu portatil: export MI_IP=x.x.x.x (en el portatil: curl https://api.ipify.org)}
 
