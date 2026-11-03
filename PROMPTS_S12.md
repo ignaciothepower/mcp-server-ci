@@ -52,7 +52,7 @@ Explícame paso a paso cómo lanzar con la CLI de mi proveedor de nube una máqu
 
 **Qué deberías ver**
 
-De 'lanzar' a 'running' en 16 segundos. 2 CPUs y 913 MB de memoria, en una zona de la región más cercana (en clase usamos Estocolmo) y con su IP pública.
+De 'lanzar' a 'running' en 16 segundos. 2 CPUs y 913 MB de memoria, en una zona de la región más cercana (en clase, una del norte de Europa) y con su IP pública.
 
 ---
 
@@ -73,7 +73,7 @@ En la máquina virtual de mi proveedor de nube, guíame para: instalar Docker y 
 
 **Qué deberías ver**
 
-Una imagen de 198 MB construida en 18,6 s. Desde mi portátil a Estocolmo: conecta en 193 ms y cada tool responde en décimas. El mismo servidor de la S10.
+Una imagen de 198 MB construida en 18,6 s. Desde mi portátil al norte de Europa: conecta en 193 ms y cada tool responde en décimas. El mismo servidor de la S10.
 
 ---
 
@@ -81,7 +81,7 @@ Una imagen de 198 MB construida en 18,6 s. Desde mi portátil a Estocolmo: conec
 
 **Qué construye**
 
-- Bucket s12-tienda-<cuenta> en Estocolmo
+- Bucket s12-tienda-<cuenta> en el norte de Europa
 - Subimos la política de devoluciones y el README
 - Bloqueo de acceso público: activado
 - Enlace firmado para compartir con caducidad
