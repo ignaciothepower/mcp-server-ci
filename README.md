@@ -120,3 +120,25 @@ No ejecutado en clase. Los dos leen el `Dockerfile` del repositorio:
 4. Te dan una URL pública con HTTPS: `curl https://TU-APP/salud`.
 
 Ojo: en el plan gratuito el servicio se duerme tras un rato sin uso y tarda unos segundos en despertar.
+
+## Proyecto final · Azure Container Apps
+
+Para el proyecto final (repo [agente-tienda](https://github.com/ignaciothepower/agente-tienda)) el servidor se despliega en **Azure Container Apps** con los scripts de `azure/`. Todo desde la **Cloud Shell** del portal de Azure, sin instalar nada en el portátil:
+
+```bash
+git clone https://github.com/ignaciothepower/mcp-server-ci.git && cd mcp-server-ci
+export MI_IP=<la IP pública de tu portátil>      # en el portátil: curl https://api.ipify.org
+bash azure/desplegar.sh        # construye la imagen en la nube con el Dockerfile y te da la URL https
+bash azure/apagar.sh           # SIEMPRE al acabar
+```
+
+| Paso | Qué hace |
+|---|---|
+| Grupo de recursos | Todo vive en `rg-master-mcp`: al borrarlo se va todo de una vez |
+| `az containerapp up --source .` | Construye la imagen en la nube y la publica por HTTPS (puerto 8000, `MCP_TRANSPORT=http`) |
+| Escala 0 a 1 | Sin peticiones no hay contenedor encendido; la primera llamada tarda unos segundos en despertarlo |
+| Regla de acceso | Solo entra tu IP; desde cualquier otra (la propia Cloud Shell) sale un 403 |
+
+Ejecución real (noviembre de 2026): de nada a la URL https en **4 min 56 s**. La región por defecto es `spaincentral` (Madrid): algunas regiones no aceptan suscripciones de prueba nuevas; si te pasa, prueba otra con `export LOC=<region>`.
+
+Apagar: la aplicación desaparece en minutos, pero **borrar el entorno de Container Apps tarda 20-30 minutos**. `apagar.sh` escribe una línea cada 30 s (así la Cloud Shell no se desconecta por inactividad) y se puede relanzar: si el grupo ya no existe, va directo a la comprobación final (grupo `false`, 0 Container Apps, 0 registros de imágenes).
