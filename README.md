@@ -7,7 +7,7 @@
 
 El servidor MCP de la tienda de la Sesión 10 (`convertir_precio`, `consultar_pedido` y el resource `tienda://politica-devoluciones`), llevado a producción: tests, linting, CI en GitHub Actions, secretos fuera del código, logging estructurado y monitorización con LangFuse.
 
-## Instalar y probar en local
+## Instalar y probar en local.....
 
 ```bash
 git clone https://github.com/ignaciothepower/mcp-server-ci.git
