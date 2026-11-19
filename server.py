@@ -1,4 +1,4 @@
-"""Servidor MCP de la tienda (Sesion 10) con logging estructurado en JSON a stderr (Sesion 11)."""
+"""Servidor MCP de la tienda (Sesion 10) con logging estructurado en JSON a stderr (Sesion 11)...."""
 
 import os
 import time
